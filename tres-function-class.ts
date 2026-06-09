@@ -32,6 +32,8 @@
 const numArray0: number[] = [0, 2, 0, 0, 2]; // t his has to end on [0,0,0,0,4]
 const numArray1: number[] = [0, 2, 2, 0, 0]; // this has to end on [ 0, 0, 4, 0, 0] => [0, 0, 0, 0, 4]
 const numArray2: number[] = [0, 0, 4, 2, 0]; // this has to end on [ 0, 0, 0, 4, 2]
+const numArray3: number[] = [2, 2, 4, 4, 0]; // this has to end on [ 0, 0, 0, 8, 8]|
+const numArray4: number[] = [2, 0, 2, 4, 0]; // this has to end on [ 0, 0, 0, 4, 4]
 
 function mergeRight(arr: number[]): number[] {
     for (let i = arr.length - 1; i > 0; i--){
@@ -77,4 +79,37 @@ function shiftRight(arr: number[]): number[] {
 }
 
 
-function boardScanner(arr: number[]): number[]{}
+function boardScanner(arrOne: number[], arrTwo: number[], arrThree: number[], arrFour: number[], arrFive: number[]): number[][]{
+    const mergedArr: number[][] = [arrOne, arrTwo, arrThree, arrFour, arrFive];
+    for (let i = 0; i < mergedArr.length; i++){
+        for (let j = 0; j < mergedArr[i].length; j++){
+            mergedArr[i][j];
+        }
+    }return mergedArr;
+}
+
+function boardMergeRight(arr: number[][]): number[][] {
+    for (let i = arr.length - 1; i >= 0; i--){  // length is 4
+        for (let j = arr[i].length - 1; j >= 0; j--){ // [i].length is 4
+            if (arr[i][j] !== 0){ // if 0,0 is NOT 0 -> check the value.
+                for (let k = 1; k <= j; k++){ // less than equals to j which is the actual value of the arr
+                    if (arr[i][j-k] !==0){
+                        if (arr[i][j] === arr[i][j-k]){
+                            arr[i][j] *= 2;
+                            arr[i][j-k] = 0;
+                            break;
+                        }else{
+                            break;
+                        }
+                    }
+                }
+            }else{
+                continue;
+            }
+        }
+    }return boardShiftRight(arr);
+}
+
+function boardShiftRight(arr: number[][]): number[][]{ //magic function
+    return arr; 
+}
