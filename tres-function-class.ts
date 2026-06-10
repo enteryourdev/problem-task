@@ -39,7 +39,7 @@ function mergeRight(arr: number[]): number[] {
     for (let i = arr.length - 1; i > 0; i--){
         if (arr[i] !== 0){ // current array is not zero
             for (let j = 1; j <= i; j++ ){ //i need J to keep going up till i - j <= 0
-                if (arr[i-j] !== 0){
+                if (arr[i-j] !== 0){ // check if next value is not a zero
                 if(arr[i] === arr[i - j]){
                     arr[i] *= 2; // then current array becomes *2 of original
                     arr[i - j] = 0; // and the next array on the LEFT becomes zero, because it merged.
