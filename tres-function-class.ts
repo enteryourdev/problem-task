@@ -111,5 +111,21 @@ function boardMergeRight(arr: number[][]): number[][] {
 }
 
 function boardShiftRight(arr: number[][]): number[][]{ //magic function
+    for (let i = arr.length - 1; i >= 0; i--){
+        for (let j = arr[i].length - 1; j >= 0; j--){
+            if (arr[i][j] === 0){
+                for (let r = j - 1; r >= 0; r--){
+                    if (arr[i][r] !== 0){
+                        arr[i][j] = arr[i][r];
+                        arr[i][r] = 0;
+                        break;
+                    }
+                }
+
+            }else{
+                continue;
+            }
+        }
+    }
     return arr; 
 }
