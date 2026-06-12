@@ -46,11 +46,12 @@ class Game2048 {
     public mergedArr: number[][] = [numArray0, numArray1, numArray2, numArray3, numArray4];
     constructor() {
         spawnTiles(this.mergedArr);
-        if (spawnTiles(this.mergedArr) === true) {
-            this.gameOver = true;
-        }
+        spawnTiles(this.mergedArr);
         while (!this.gameOver){
-
+            if (spawnTiles(this.mergedArr) === true) {
+                console.log("Game ended.");
+                this.gameOver = true;
+        }
         }
 
     }
