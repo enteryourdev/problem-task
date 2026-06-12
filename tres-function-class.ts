@@ -35,6 +35,28 @@ const numArray2: number[] = [0, 0, 4, 2, 0]; // this has to end on [ 0, 0, 0, 4,
 const numArray3: number[] = [2, 2, 4, 4, 0]; // this has to end on [ 0, 0, 0, 8, 8]|
 const numArray4: number[] = [2, 0, 2, 4, 0]; // this has to end on [ 0, 0, 0, 4, 4]
 
+
+const readline = require("readline");
+
+readline.emitKeypressEvents(process.stdin);
+readline.setRawMode(true);
+
+process.stdin.on("keypress", (str, key) => {
+    if (key.name === 'w') {
+
+    }
+    if (key.name === 'a') {
+
+    }
+    if (key.name === 's') {
+
+    }
+    if (key.name === 'd') {
+
+    }
+    if (key.ctrl && key.name === 'c') process.exit();
+});
+
 function mergeRight(arr: number[]): number[] {
     for (let i = arr.length - 1; i > 0; i--){
         if (arr[i] !== 0){ // current array is not zero
