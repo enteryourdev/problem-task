@@ -29,17 +29,50 @@
  *
  */
 
-const numArray0: number[] = [0, 2, 0, 0, 2]; // t his has to end on [0,0,0,0,4]
-const numArray1: number[] = [0, 2, 2, 0, 0]; // this has to end on [ 0, 0, 4, 0, 0] => [0, 0, 0, 0, 4]
-const numArray2: number[] = [0, 0, 4, 2, 0]; // this has to end on [ 0, 0, 0, 4, 2]
-const numArray3: number[] = [2, 2, 4, 4, 0]; // this has to end on [ 0, 0, 0, 8, 8]|
-const numArray4: number[] = [2, 0, 2, 4, 0]; // this has to end on [ 0, 0, 0, 4, 4]
+const numArray0: number[] = [0, 0, 0, 0, 0]; // t his has to end on [0,0,0,0,4]
+const numArray1: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 4, 0, 0] => [0, 0, 0, 0, 4]
+const numArray2: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 2]
+const numArray3: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 8, 8]|
+const numArray4: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 4]
 
 
 const readline = require("readline");
 
 readline.emitKeypressEvents(process.stdin);
 readline.setRawMode(true);
+
+class Game2048 {
+    public gameOver: boolean = false;
+    public mergedArr: number[][] = [numArray0, numArray1, numArray2, numArray3, numArray4];
+    constructor() {
+        spawnTiles(this.mergedArr);
+        if (spawnTiles(this.mergedArr) === true) {
+            this.gameOver = true;
+        }
+        while (!this.gameOver){
+
+        }
+
+    }
+
+}
+
+const game = new Game2048();
+
+function spawnTiles(arr: number[][]): number[][] | boolean { // while there is unoccupied or 0 tile, does 0 exist?, if it does
+    let hasZero = false;
+    while (hasZero === false){
+        const i = Math.floor(Math.random() * arr.length); // math random 0 ~ 0.99.
+        const j = Math.floor(Math.random() * arr[i].length);
+        if (arr[i][j] === 0){
+            hasZero = true;
+            arr[i][j] = 2;
+            return arr;
+        }else{
+            continue;
+        }
+    }return true;
+}
 
 process.stdin.on("keypress", (str, key) => {
     if (key.name === 'w') {
@@ -100,14 +133,10 @@ function shiftRight(arr: number[]): number[] {
     }return arr;
 }
 
-
 function boardScanner(arrOne: number[], arrTwo: number[], arrThree: number[], arrFour: number[], arrFive: number[]): number[][]{
     const mergedArr: number[][] = [arrOne, arrTwo, arrThree, arrFour, arrFive];
-    for (let i = 0; i < mergedArr.length; i++){
-        for (let j = 0; j < mergedArr[i].length; j++){
-            mergedArr[i][j];
-        }
-    }return mergedArr;
+    //readd scans
+    return mergedArr;
 }
 
 function boardMergeRight(arr: number[][]): number[][] {
