@@ -35,6 +35,10 @@ const numArray2: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4,
 const numArray3: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 8, 8]|
 const numArray4: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 4]
 
+function boardMerge(arrOne: number[], arrTwo: number[], arrThree: number[], arrFour: number[], arrFive: number[]): number[][]{
+    const mergedArr: number[][] = [arrOne, arrTwo, arrThree, arrFour, arrFive];
+    return mergedArr;
+}
 
 const readline = require("readline");
 
@@ -52,6 +56,28 @@ class Game2048 {
             if (spawnTiles(this.mergedArr) === true) {
                 console.log("Game ended.");
                 this.gameOver = true;
+
+
+
+                process.stdin.on("keypress", (str, key) => {
+                    if (key.name === 'w') {
+                        this.mergedArr = boardMergeUp(this.mergedArr);
+                        this.mergedArr = boardShiftDown(this.mergedArr);
+                    }
+                    if (key.name === 'a') {
+                        this.mergedArr = boardMergeLeft(this.mergedArr);
+                        this.mergedArr = boardShiftLeft(this.mergedArr);
+                    }
+                    if (key.name === 's') {
+                        this.mergedArr = boardMergeDown(this.mergedArr);
+                        this.mergedArr = boardShiftDown(this.mergedArr);
+                    }
+                    if (key.name === 'd') {
+                        this.mergedArr = boardMergeRight(this.mergedArr);
+                        this.mergedArr = boardShiftRight(this.mergedArr);
+                    }
+                    if (key.ctrl && key.name === 'c') process.exit();
+                });
         }
         }
 
@@ -75,24 +101,7 @@ function spawnTiles(arr: number[][]): number[][] | boolean {
     const [r, k] = emptyTiles[idx];
     arr[r][k] = 2;
     return arr;
-
 }
-
-process.stdin.on("keypress", (str, key) => {
-    if (key.name === 'w') {
-
-    }
-    if (key.name === 'a') {
-
-    }
-    if (key.name === 's') {
-
-    }
-    if (key.name === 'd') {
-
-    }
-    if (key.ctrl && key.name === 'c') process.exit();
-});
 
 function mergeRight(arr: number[]): number[] {
     for (let i = arr.length - 1; i > 0; i--){
@@ -137,12 +146,6 @@ function shiftRight(arr: number[]): number[] {
     }return arr;
 }
 
-function boardScanner(arrOne: number[], arrTwo: number[], arrThree: number[], arrFour: number[], arrFive: number[]): number[][]{
-    const mergedArr: number[][] = [arrOne, arrTwo, arrThree, arrFour, arrFive];
-    //readd scans
-    return mergedArr;
-}
-
 function boardMergeRight(arr: number[][]): number[][] {
     for (let i = arr.length - 1; i >= 0; i--){  // length is 4
         for (let j = arr[i].length - 1; j >= 0; j--){ // [i].length is 4
@@ -162,10 +165,136 @@ function boardMergeRight(arr: number[][]): number[][] {
                 continue;
             }
         }
-    }return boardShiftRight(arr);
+    }return arr;
 }
 
 function boardShiftRight(arr: number[][]): number[][]{ //magic function
+    for (let i = arr.length - 1; i >= 0; i--){
+        for (let j = arr[i].length - 1; j >= 0; j--){
+            if (arr[i][j] === 0){
+                for (let r = j - 1; r >= 0; r--){
+                    if (arr[i][r] !== 0){
+                        arr[i][j] = arr[i][r];
+                        arr[i][r] = 0;
+                        break;
+                    }
+                }
+
+            }else{
+                continue;
+            }
+        }
+    }
+    return arr; 
+}
+
+function boardMergeLeft(arr: number[][]): number[][] {
+    for (let i = arr.length - 1; i >= 0; i--){  // length is 4
+        for (let j = arr[i].length - 1; j >= 0; j--){ // [i].length is 4
+            if (arr[i][j] !== 0){ // if 0,0 is NOT 0 -> check the value.
+                for (let k = 1; k <= j; k++){ // less than equals to j which is the actual value of the arr
+                    if (arr[i][j-k] !==0){
+                        if (arr[i][j] === arr[i][j-k]){
+                            arr[i][j] *= 2;
+                            arr[i][j-k] = 0;
+                            break;
+                        }else{
+                            break;
+                        }
+                    }
+                }
+            }else{
+                continue;
+            }
+        }
+    }return arr;
+}
+
+function boardShiftLeft(arr: number[][]): number[][]{ //magic function
+    for (let i = arr.length - 1; i >= 0; i--){
+        for (let j = arr[i].length - 1; j >= 0; j--){
+            if (arr[i][j] === 0){
+                for (let r = j - 1; r >= 0; r--){
+                    if (arr[i][r] !== 0){
+                        arr[i][j] = arr[i][r];
+                        arr[i][r] = 0;
+                        break;
+                    }
+                }
+
+            }else{
+                continue;
+            }
+        }
+    }
+    return arr; 
+}
+
+function boardMergeUp(arr: number[][]): number[][] {
+    for (let i = arr.length - 1; i >= 0; i--){  // length is 4
+        for (let j = arr[i].length - 1; j >= 0; j--){ // [i].length is 4
+            if (arr[i][j] !== 0){ // if 0,0 is NOT 0 -> check the value.
+                for (let k = 1; k <= j; k++){ // less than equals to j which is the actual value of the arr
+                    if (arr[i][j-k] !==0){
+                        if (arr[i][j] === arr[i][j-k]){
+                            arr[i][j] *= 2;
+                            arr[i][j-k] = 0;
+                            break;
+                        }else{
+                            break;
+                        }
+                    }
+                }
+            }else{
+                continue;
+            }
+        }
+    }return arr;
+}
+
+function boardShiftUp(arr: number[][]): number[][]{ //magic function
+    for (let i = arr.length - 1; i >= 0; i--){
+        for (let j = arr[i].length - 1; j >= 0; j--){
+            if (arr[i][j] === 0){
+                for (let r = j - 1; r >= 0; r--){
+                    if (arr[i][r] !== 0){
+                        arr[i][j] = arr[i][r];
+                        arr[i][r] = 0;
+                        break;
+                    }
+                }
+
+            }else{
+                continue;
+            }
+        }
+    }
+    return arr; 
+}
+
+function boardMergeDown(arr: number[][]): number[][] {
+    for (let i = arr.length - 1; i >= 0; i--){  // length is 4
+        for (let j = arr[i].length - 1; j >= 0; j--){ // [i].length is 4
+            if (arr[i][j] !== 0){ // if 0,0 is NOT 0 -> check the value.
+                for (let k = 1; k <= j; k++){ // less than equals to j which is the actual value of the arr
+                    if (arr[i][j-k] !==0){
+                        if (arr[i][j] === arr[i][j-k]){
+                            arr[i][j] *= 2;
+                            arr[i][j-k] = 0;
+                            break;
+                        }else{
+                            break;
+                        }
+                    }
+                }
+            }else{
+                continue;
+            }
+        }
+    }return arr;
+}
+
+function boardShiftDown(arr: number[][]): number[][]{ //magic function
     for (let i = arr.length - 1; i >= 0; i--){
         for (let j = arr[i].length - 1; j >= 0; j--){
             if (arr[i][j] === 0){
