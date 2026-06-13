@@ -47,7 +47,8 @@ class Game2048 {
     constructor() {
         spawnTiles(this.mergedArr);
         spawnTiles(this.mergedArr);
-        while (!this.gameOver){
+
+        while (!this.gameOver){ // game start loop
             if (spawnTiles(this.mergedArr) === true) {
                 console.log("Game ended.");
                 this.gameOver = true;
@@ -60,19 +61,21 @@ class Game2048 {
 
 const game = new Game2048();
 
-function spawnTiles(arr: number[][]): number[][] | boolean { // while there is unoccupied or 0 tile, does 0 exist?, if it does
-    let hasZero = false;
-    while (hasZero === false){
-        const i = Math.floor(Math.random() * arr.length); // math random 0 ~ 0.99.
-        const j = Math.floor(Math.random() * arr[i].length);
-        if (arr[i][j] === 0){
-            hasZero = true;
-            arr[i][j] = 2;
-            return arr;
-        }else{
-            continue;
+function spawnTiles(arr: number[][]): number[][] | boolean { 
+    //on a board, i need to find all zeroes ( aka empty tile )
+    let emptyTiles: [number, number][] =[];
+    //to find all zeroes i need to to know which positions are zeroes.
+    for (let i = 0; i < arr.length; i++){
+        for (let j = 0; j < arr[i].length; j++){
+            if (arr[i][j] === 0) emptyTiles.push([i, j]); //empty tiles takes [number, number].
         }
-    }return true;
+    } 
+    if (emptyTiles.length === 0) return true; //nothing in the emptytiles = meaning everything has a value. returns gameover.
+    const idx = Math.floor(Math.random() * emptyTiles.length); //between all empty tiles, i choose one.
+    const [r, k] = emptyTiles[idx];
+    arr[r][k] = 2;
+    return arr;
+
 }
 
 process.stdin.on("keypress", (str, key) => {
