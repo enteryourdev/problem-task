@@ -72,12 +72,18 @@ class Game2048 {
                         spawnTiles(this.mergedArr);
                     }
                     if (key.name === 's') {
+                        reverseTiles(this.mergedArr);
+                        transpose(this.mergedArr);
                         this.mergedArr = boardMergeDown(this.mergedArr);
                         this.mergedArr = boardShiftDown(this.mergedArr);
+                        reverseTiles(this.mergedArr);
+                        transpose(this.mergedArr);
                     }
                     if (key.name === 'd') {
+                        transpose(this.mergedArr);
                         this.mergedArr = boardMergeRight(this.mergedArr);
                         this.mergedArr = boardShiftRight(this.mergedArr);
+                        transpose(this.mergedArr);
                         spawnTiles(this.mergedArr);
                     }
                     if (key.ctrl && key.name === 'c') process.exit();
@@ -113,6 +119,12 @@ function reverseTiles(arr: number[][]): number[][]{
 
 function transpose(arr: number[][]): number[][]{
     //relearning transpose i need arr[i][j] to be arr[j][i]
+    const transposed: number[][] = [];
+    for (let i = 0; i < arr.length; i++){
+        for (let j = 0; j < arr[i].length; j++){
+            transposed[j][i] = arr[i][j];
+        }
+    }return transposed;
 }
 
 function mergeRight(arr: number[]): number[] {
