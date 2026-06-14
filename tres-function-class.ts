@@ -65,8 +65,11 @@ class Game2048 {
                         this.mergedArr = boardShiftDown(this.mergedArr);
                     }
                     if (key.name === 'a') {
+                        reverseTiles(this.mergedArr);
                         this.mergedArr = boardMergeLeft(this.mergedArr);
                         this.mergedArr = boardShiftLeft(this.mergedArr);
+                        reverseTiles(this.mergedArr);
+                        spawnTiles(this.mergedArr);
                     }
                     if (key.name === 's') {
                         this.mergedArr = boardMergeDown(this.mergedArr);
@@ -75,6 +78,7 @@ class Game2048 {
                     if (key.name === 'd') {
                         this.mergedArr = boardMergeRight(this.mergedArr);
                         this.mergedArr = boardShiftRight(this.mergedArr);
+                        spawnTiles(this.mergedArr);
                     }
                     if (key.ctrl && key.name === 'c') process.exit();
                 });
@@ -101,6 +105,10 @@ function spawnTiles(arr: number[][]): number[][] | boolean {
     const [r, k] = emptyTiles[idx];
     arr[r][k] = 2;
     return arr;
+}
+
+function reverseTiles(arr: number[][]): number[][]{
+    return arr.reverse();
 }
 
 function mergeRight(arr: number[]): number[] {
