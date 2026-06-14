@@ -29,21 +29,17 @@
  *
  */
 
-const numArray0: number[] = [0, 0, 0, 0, 0]; // t his has to end on [0,0,0,0,4]
-const numArray1: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 4, 0, 0] => [0, 0, 0, 0, 4]
-const numArray2: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 2]
-const numArray3: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 8, 8]|
-const numArray4: number[] = [0, 0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 4]
+const numArray0: number[] = [0, 0, 0, 0]; // t his has to end on [0,0,0,0,4]
+const numArray1: number[] = [0, 0, 0, 0]; // this has to end on [ 0, 0, 4, 0, 0] => [0, 0, 0, 0, 4]
+const numArray2: number[] = [0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 2]
+const numArray3: number[] = [0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 8, 8]|
+const numArray4: number[] = [0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 4]
 
-function boardMerge(arrOne: number[], arrTwo: number[], arrThree: number[], arrFour: number[], arrFive: number[]): number[][]{
+function boardMerge(arrOne: number[], arrTwo: number[], arrThree: number[], arrFour: number[]): number[][]{
     const mergedArr: number[][] = [arrOne, arrTwo, arrThree, arrFour, arrFive];
     return mergedArr;
 }
 
-const readline = require("readline");
-
-readline.emitKeypressEvents(process.stdin);
-readline.setRawMode(true);
 
 class Game2048 {
     public gameOver: boolean = false;
@@ -51,51 +47,64 @@ class Game2048 {
     constructor() {
         spawnTiles(this.mergedArr);
         spawnTiles(this.mergedArr);
+        renderBoard(this.mergedArr);
 
-        while (!this.gameOver){ // game start loop
-            if (spawnTiles(this.mergedArr) === true) {
+
+/*            if (spawnTiles(this.mergedArr) === true) {
                 console.log("Game ended.");
                 this.gameOver = true;
+*/           // }
 
-
-
+                
+                const readline = require("readline");
+                readline.emitKeypressEvents(process.stdin);
+                if (process.stdin.isTTY) process.stdin.setRawMode(true);
+                
                 process.stdin.on("keypress", (str, key) => { // doesnt need this.mergedArr = blah() bcuz its a mutation.
+                    if (this.gameOver) return;
+                    if (key.ctrl && key.name === 'c') process.exit();
+                    renderBoard(this.mergedArr);
+
+
                     if (key.name === 'w') {
                         boardMergeUp(this.mergedArr);
                         boardShiftDown(this.mergedArr);
                     }
                     if (key.name === 'a') {
-                        this.mergedArr = reverseTiles(this.mergedArr);
-                        this.mergedArr = boardMergeLeft(this.mergedArr);
-                        this.mergedArr = boardShiftLeft(this.mergedArr);
-                        this.mergedArr = reverseTiles(this.mergedArr);
+                        reverseTiles(this.mergedArr);
+                        boardMergeLeft(this.mergedArr);
+                        boardShiftLeft(this.mergedArr);
+                        reverseTiles(this.mergedArr);
                         spawnTiles(this.mergedArr);
                     }
                     if (key.name === 's') {
                         reverseTiles(this.mergedArr);
                         transpose(this.mergedArr);
-                        this.mergedArr = boardMergeDown(this.mergedArr);
-                        this.mergedArr = boardShiftDown(this.mergedArr);
+                        boardMergeDown(this.mergedArr);
+                        boardShiftDown(this.mergedArr);
                         reverseTiles(this.mergedArr);
                         transpose(this.mergedArr);
                     }
                     if (key.name === 'd') {
                         transpose(this.mergedArr);
-                        this.mergedArr = boardMergeRight(this.mergedArr);
-                        this.mergedArr = boardShiftRight(this.mergedArr);
+                        boardMergeRight(this.mergedArr);
+                        boardShiftRight(this.mergedArr);
                         transpose(this.mergedArr);
                         spawnTiles(this.mergedArr);
                     }
                     if (key.ctrl && key.name === 'c') process.exit();
                 });
         }
-        }
-
     }
 
-}
 
 const game = new Game2048();
+
+function renderBoard(arr: number[][]): void {
+    console.log("Current board state:");
+    console.log(arr.map(row => row.join(' ')).join('\n'));
+    console.log("-----------");
+}
 
 function spawnTiles(arr: number[][]): number[][] | boolean { 
     //on a board, i need to find all zeroes ( aka empty tile )
@@ -120,6 +129,9 @@ function reverseTiles(arr: number[][]): number[][]{
 function transpose(arr: number[][]): number[][]{
     //relearning transpose i need arr[i][j] to be arr[j][i]
     const transposed: number[][] = [];
+    for (let l = 0; l < arr.length; l++){
+        transposed.push([]);
+    }
     for (let i = 0; i < arr.length; i++){
         for (let j = 0; j < arr[i].length; j++){
             transposed[j][i] = arr[i][j];
