@@ -69,6 +69,7 @@ class Game2048 {
                     if (key.name === 'w') {
                         boardMergeUp(this.mergedArr);
                         boardShiftDown(this.mergedArr);
+                        spawnTiles(this.mergedArr);                        
                     }
                     if (key.name === 'a') {
                         reverseTiles(this.mergedArr);
@@ -84,6 +85,7 @@ class Game2048 {
                         boardShiftDown(this.mergedArr);
                         reverseTiles(this.mergedArr);
                         transpose(this.mergedArr);
+                        spawnTiles(this.mergedArr);                        
                     }
                     if (key.name === 'd') {
                         transpose(this.mergedArr);
@@ -92,7 +94,6 @@ class Game2048 {
                         transpose(this.mergedArr);
                         spawnTiles(this.mergedArr);
                     }
-                    if (key.ctrl && key.name === 'c') process.exit();
                 });
         }
     }
