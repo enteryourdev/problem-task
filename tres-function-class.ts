@@ -24,8 +24,8 @@
  * my task for the 3 functions that i have to make
  * 2-3 arrays of lets say index of 5 both for testing.
  * 
- * 
- * 
+ * BUG LOG
+ * pressing right once doesnt change anything. i have to press twice.
  *
  */
 
@@ -33,17 +33,17 @@ const numArray0: number[] = [0, 0, 0, 0]; // t his has to end on [0,0,0,0,4]
 const numArray1: number[] = [0, 0, 0, 0]; // this has to end on [ 0, 0, 4, 0, 0] => [0, 0, 0, 0, 4]
 const numArray2: number[] = [0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 2]
 const numArray3: number[] = [0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 8, 8]|
-const numArray4: number[] = [0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 4]
+//const numArray4: number[] = [0, 0, 0, 0]; // this has to end on [ 0, 0, 0, 4, 4]
 
 function boardMerge(arrOne: number[], arrTwo: number[], arrThree: number[], arrFour: number[]): number[][]{
-    const mergedArr: number[][] = [arrOne, arrTwo, arrThree, arrFour, arrFive];
+    const mergedArr: number[][] = [arrOne, arrTwo, arrThree, arrFour];
     return mergedArr;
 }
 
 
 class Game2048 {
     public gameOver: boolean = false;
-    public mergedArr: number[][] = [numArray0, numArray1, numArray2, numArray3, numArray4];
+    public mergedArr: number[][] = [numArray0, numArray1, numArray2, numArray3];
     constructor() {
         spawnTiles(this.mergedArr);
         spawnTiles(this.mergedArr);
@@ -63,37 +63,42 @@ class Game2048 {
                 process.stdin.on("keypress", (str, key) => { // doesnt need this.mergedArr = blah() bcuz its a mutation.
                     if (this.gameOver) return;
                     if (key.ctrl && key.name === 'c') process.exit();
-                    renderBoard(this.mergedArr);
 
 
-                    if (key.name === 'w') {
+                    if (key.name === 's') {
+                        this.mergedArr = transpose(this.mergedArr);
+                        boardShiftUp(this.mergedArr);                       
                         boardMergeUp(this.mergedArr);
-                        boardShiftDown(this.mergedArr);
+                        boardShiftUp(this.mergedArr);
+                        this.mergedArr = transpose(this.mergedArr);                        
                         spawnTiles(this.mergedArr);                        
                     }
                     if (key.name === 'a') {
                         reverseTiles(this.mergedArr);
+                        boardShiftLeft(this.mergedArr);
                         boardMergeLeft(this.mergedArr);
                         boardShiftLeft(this.mergedArr);
                         reverseTiles(this.mergedArr);
                         spawnTiles(this.mergedArr);
                     }
-                    if (key.name === 's') {
+                    if (key.name === 'w') {
+                        this.mergedArr = transpose(this.mergedArr);                        
                         reverseTiles(this.mergedArr);
-                        transpose(this.mergedArr);
+                        boardShiftDown(this.mergedArr);                        
                         boardMergeDown(this.mergedArr);
                         boardShiftDown(this.mergedArr);
                         reverseTiles(this.mergedArr);
-                        transpose(this.mergedArr);
+                        this.mergedArr = transpose(this.mergedArr);
                         spawnTiles(this.mergedArr);                        
                     }
                     if (key.name === 'd') {
-                        transpose(this.mergedArr);
+                        boardShiftRight(this.mergedArr);
                         boardMergeRight(this.mergedArr);
                         boardShiftRight(this.mergedArr);
-                        transpose(this.mergedArr);
                         spawnTiles(this.mergedArr);
                     }
+                renderBoard(this.mergedArr);
+                if(spawnTiles(this.mergedArr) === true) this.gameOver = true;
                 });
         }
     }
@@ -123,8 +128,10 @@ function spawnTiles(arr: number[][]): number[][] | boolean {
     return arr;
 }
 
-function reverseTiles(arr: number[][]): number[][]{
-    return arr.reverse();
+function reverseTiles(arr: number[][]): void{
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].reverse();  
+    }
 }
 
 function transpose(arr: number[][]): number[][]{
