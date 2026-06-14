@@ -59,16 +59,16 @@ class Game2048 {
 
 
 
-                process.stdin.on("keypress", (str, key) => {
+                process.stdin.on("keypress", (str, key) => { // doesnt need this.mergedArr = blah() bcuz its a mutation.
                     if (key.name === 'w') {
-                        this.mergedArr = boardMergeUp(this.mergedArr);
-                        this.mergedArr = boardShiftDown(this.mergedArr);
+                        boardMergeUp(this.mergedArr);
+                        boardShiftDown(this.mergedArr);
                     }
                     if (key.name === 'a') {
-                        reverseTiles(this.mergedArr);
+                        this.mergedArr = reverseTiles(this.mergedArr);
                         this.mergedArr = boardMergeLeft(this.mergedArr);
                         this.mergedArr = boardShiftLeft(this.mergedArr);
-                        reverseTiles(this.mergedArr);
+                        this.mergedArr = reverseTiles(this.mergedArr);
                         spawnTiles(this.mergedArr);
                     }
                     if (key.name === 's') {
@@ -109,6 +109,10 @@ function spawnTiles(arr: number[][]): number[][] | boolean {
 
 function reverseTiles(arr: number[][]): number[][]{
     return arr.reverse();
+}
+
+function transpose(arr: number[][]): number[][]{
+    //relearning transpose i need arr[i][j] to be arr[j][i]
 }
 
 function mergeRight(arr: number[]): number[] {
